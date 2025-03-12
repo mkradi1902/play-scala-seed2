@@ -23,7 +23,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     Ok(views.html.index())
   }
 
-  def product(prodType: String, prodNum: Int) = Action{
+  def product(prodType: String, prodNum: Int) = Action {
     Ok(s"Product type is: $prodType, product number is: $prodNum")
   }
 }
