@@ -17,7 +17,7 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
     Ok(s"$username logged in with $password.")
   }
 
-  def validateLoginPost = Action { request =>
+  def validateLoginPost = Action { implicit request =>
     val postVals = request.body.asFormUrlEncoded
     postVals.map { args =>
       val username = args("username").head
@@ -32,7 +32,7 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
 
   }
   
-  def createUser  =  Action { request =>
+  def createUser  =  Action { implicit request =>
     val postVals = request.body.asFormUrlEncoded
     postVals.map { args =>
       val username = args("username").head
@@ -47,7 +47,7 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
 
   }
 
-  def taskList = Action { request =>
+  def taskList = Action { implicit request =>
     val usernameOption = request.session.get("username")
     usernameOption.map { username =>
       val tasks = TaskListInMemoryModel.getTasks(username)
