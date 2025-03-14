@@ -11,10 +11,9 @@ GET         /productRE/$prodType<[a-z]{2}\d\d>/:prodNum        controllers.HomeC
 
 GET         /login1                                            controllers.TaskList1.login
 GET         /validateGet1                                      controllers.TaskList1.validateLoginGet(username, password)
-+nocrsf
 POST        /validatePost1                                     controllers.TaskList1.validateLoginPost
-+nocrsf
 POST        /createUser1                                       controllers.TaskList1.createUser
 GET         /taskList1                                         controllers.TaskList1.taskList
+GET         /Logout1                                            controllers.TaskList1.Logout
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                      controllers.Assets.versioned(path="/public", file: Asset)

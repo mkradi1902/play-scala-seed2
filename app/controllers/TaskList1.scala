@@ -9,7 +9,7 @@ import play.api.mvc._
 @Singleton
 class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  def login = Action {
+  def login = Action { implicit request =>
     Ok(views.html.login1())
   }
 
@@ -23,7 +23,7 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
       val username = args("username").head
       val password = args("password").head
       if(TaskListInMemoryModel.validateUser(username , password)){
-        Redirect(routes.TaskList1.taskList)
+        Redirect(routes.TaskList1.taskList).withSession("ussername" -> "username")
       }
       else {
         Redirect(routes.TaskList1.login)
@@ -38,7 +38,7 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
       val username = args("username").head
       val password = args("password").head
       if(TaskListInMemoryModel.createUser(username , password)){
-        Redirect(routes.TaskList1.taskList)
+        Redirect(routes.TaskList1.taskList).withSession("username" -> "username")
       }
       else {
         Redirect(routes.TaskList1.login)
@@ -47,10 +47,15 @@ class TaskList1 @Inject()(val controllerComponents: ControllerComponents) extend
 
   }
 
-  def taskList = Action {
-    val username="Mohammad"
-    val tasks= TaskListInMemoryModel.getTasks(username)
-    Ok(views.html.taskList1(tasks))
+  def taskList = Action { request =>
+    val usernameOption = request.session.get("username")
+    usernameOption.map { username =>
+      val tasks = TaskListInMemoryModel.getTasks(username)
+      Ok(views.html.taskList1(tasks))
+    }.getOrElse(Redirect(routes.TaskList1.login))
   }
 
+  def Logout = Action {
+    (Redirect(routes.TaskList1.login)).withNewSession
+  }
 }
